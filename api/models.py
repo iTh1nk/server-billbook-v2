@@ -1,11 +1,12 @@
+import uuid
+
 from django.conf import settings
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from server_billbook_v2.settings import AUTH_USER_MODEL
-
-import uuid
 
 
 class UserManager(BaseUserManager):
@@ -28,7 +29,7 @@ class UserManager(BaseUserManager):
         user.save()
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(
         verbose_name='email address', max_length=255, unique=True)
