@@ -46,7 +46,7 @@ class UserLoginSerializer(serializers.Serializer):
         user = authenticate(email=email, password=password)
         print(api_settings.JWT_PAYLOAD_HANDLER)
         if user is None:
-            raise serializers.ValidationError('User not found!')
+            raise serializers.ValidationError('Email or Password Not Match!')
         try:
             payload = api_settings.JWT_PAYLOAD_HANDLER(user)
             jwt_token = api_settings.JWT_ENCODE_HANDLER(payload)

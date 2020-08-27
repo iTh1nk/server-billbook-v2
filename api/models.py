@@ -74,8 +74,8 @@ class Cycles(models.Model):
 
 
 class Statements(models.Model):
-    username = models.CharField(max_length=255)
-    cycle = models.CharField(max_length=255)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='user_statements', null=True)
+    cycle = models.ForeignKey(to=Cycles, on_delete=models.CASCADE, related_name='cycle_statements', null=True)
     balance = models.CharField(max_length=255)
     notes = models.TextField()
     createdAt = models.DateField(auto_now_add=True)
@@ -86,7 +86,7 @@ class Statements(models.Model):
 
 
 class Activities(models.Model):
-    username = models.CharField(max_length=255)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='user_activities', null=True)
     date = models.DateField()
     amount = models.CharField(max_length=255)
     totalBalance = models.CharField(max_length=255)
