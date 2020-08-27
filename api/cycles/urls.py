@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home),
-    path('get-post/', views.CyclesGetPost.as_view())
+    path('all/', views.CyclesGetPost.as_view()),
+    path('single/<int:pk>/', views.CyclesGetPutDelete.as_view())
 ]
