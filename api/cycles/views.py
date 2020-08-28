@@ -14,24 +14,26 @@ from . import serializers
 
 @api_view(["GET"])
 def home(request):
-    return Response({"message", "This is Cycles Home!"}, status=status.HTTP_200_OK)
+    return Response({"message": "This is Cycles Home!"}, status=status.HTTP_200_OK)
 
 
 class GetAll(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        cycles = models.Cycles.objects.all()
+        cycles = models.Cycles.objects.all().order_by('date')
         serializer = serializers.CyclesSerializer(cycles, many=True)
         return Response(serializer.data)
 
 
 class GetAny(APIView):
+    # permission_classes = (IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         cycle = models.Cycles.objects.get(id=pk)
         serializer = serializers.CyclesSerializer(cycle)
+        # self.check_object_permissions(self.request, {'user': cycle.date})
         return Response(serializer.data)
 
 
