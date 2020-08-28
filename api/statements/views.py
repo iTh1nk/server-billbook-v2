@@ -30,9 +30,8 @@ class GetAny(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
-        cycle = models.Statements.objects.get(id=pk)
-        serializer = serializers.StatementsSerializer(cycle)
-        # self.check_object_permissions(self.request, {'user': cycle.date})
+        statement = models.Statements.objects.get(id=pk)
+        serializer = serializers.StatementsSerializer(statement)
         return Response(serializer.data)
 
 
@@ -41,7 +40,7 @@ class PostAll(APIView):
 
     def post(self, request):
         print(request.data)
-        serializer = serializers.StatementsSerializer(data=request.data)
+        serializer = serializers.StatementsFKSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'success': 'Post Successfully!', 'data': serializer.data}, status=status.HTTP_201_CREATED)
@@ -52,8 +51,8 @@ class PutAny(APIView):
     permission_classes = (IsAdminUser,)
 
     def put(self, request, pk):
-        cycle = models.Statements.objects.get(id=pk)
-        serializer = serializers.StatementsSerializer(cycle, request.data)
+        statement = models.Statements.objects.get(id=pk)
+        serializer = serializers.StatementsSerializer(statement, request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'success': 'Updated Successfully!', 'data': serializer.data}, status=status.HTTP_200_OK)
@@ -64,6 +63,6 @@ class DeleteAny(APIView):
     permission_classes = (IsAdminUser,)
 
     def delete(self, _, pk):
-        cycle = models.Statements.objects.get(id=pk)
-        cycle.delete()
+        statement = models.Statements.objects.get(id=pk)
+        statement.delete()
         return Response({'success': 'Deleted Successfully!'}, status=status.HTTP_204_NO_CONTENT)

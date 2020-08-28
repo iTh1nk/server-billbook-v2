@@ -1,21 +1,29 @@
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from api.user.serializers import UserLoginSerializer
+from api.models import UserProfile, User
+from api.user.serializers import UserLoginSerializer, UserFKSerializer, UserSerializer
 
 from .serializers import UserRegistrationSerializer
 
-from api.models import UserProfile
+
+class UserList(RetrieveAPIView):
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserFKSerializer(users, many=True)
+        return Response(serializer.data)
 
 
 class UserRegistrationView(CreateAPIView):
 
-    serializer_class = UserRegistrationSerializer
     permission_classes = (AllowAny,)
+    serializer_class = UserRegistrationSerializer
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)

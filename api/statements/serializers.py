@@ -9,4 +9,9 @@ class StatementsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Statements
         fields = "__all__"
-        depth = 1
+
+
+class StatementsFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Statements
+        fields = ('id', 'balance', 'notes', 'user', 'cycle')

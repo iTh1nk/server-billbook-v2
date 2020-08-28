@@ -6,6 +6,13 @@ from rest_framework_jwt.settings import api_settings
 from api.models import User, UserProfile
 
 
+class UserFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'profile', 'user_statements', 'user_activities')
+        depth = 1
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -44,7 +51,6 @@ class UserLoginSerializer(serializers.Serializer):
         email = data.get("email", None)
         password = data.get("password", None)
         user = authenticate(email=email, password=password)
-        print(api_settings.JWT_PAYLOAD_HANDLER)
         if user is None:
             raise serializers.ValidationError('Email or Password Not Match!')
         try:
@@ -55,5 +61,5 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('User does not exist!')
         return {
             'email': user.email,
-            'token': jwt_token
+            'token': 'Bearer ' + jwt_token
         }

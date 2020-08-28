@@ -55,7 +55,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=50, unique=False)
     last_name = models.CharField(max_length=50, unique=False)
     phone_number = models.CharField(
-        max_length=10, unique=True, null=False, blank=False)
+        max_length=10, null=False, blank=False)
     age = models.PositiveIntegerField(null=False, blank=False)
     GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'),)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -65,19 +65,22 @@ class UserProfile(models.Model):
 
 
 class Cycles(models.Model):
-    date = models.DateField(auto_now=False, auto_now_add=False)
+    date = models.DateField(auto_now=False, auto_now_add=False, unique=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.date
 
+    # class Meta:
+    #     ordering = ['date']
+
 
 class Statements(models.Model):
     user = models.ForeignKey(
-        to=User, on_delete=models.CASCADE, related_name='user_statements', null=True)
+        User, on_delete=models.CASCADE, related_name='user_statements')
     cycle = models.ForeignKey(
-        to=Cycles, on_delete=models.CASCADE, related_name='cycle_statements', null=True)
+        Cycles, on_delete=models.CASCADE, related_name='cycle_statements')
     balance = models.CharField(max_length=255)
     notes = models.TextField()
     createdAt = models.DateField(auto_now_add=True)
@@ -89,7 +92,7 @@ class Statements(models.Model):
 
 class Activities(models.Model):
     user = models.ForeignKey(
-        to=User, on_delete=models.CASCADE, related_name='user_activities', null=True)
+        to=User, on_delete=models.CASCADE, related_name='user_activities', null=False)
     date = models.DateField()
     amount = models.CharField(max_length=255)
     totalBalance = models.CharField(max_length=255)

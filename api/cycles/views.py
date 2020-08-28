@@ -22,7 +22,7 @@ class GetAll(APIView):
 
     def get(self, request):
         cycles = models.Cycles.objects.all().order_by('date')
-        serializer = serializers.CyclesSerializer(cycles, many=True)
+        serializer = serializers.CyclesFKSerializer(cycles, many=True)
         return Response(serializer.data)
 
 
