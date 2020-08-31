@@ -3,12 +3,22 @@ from rest_framework.decorators import permission_classes
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from api.models import UserProfile, User
-from api.user.serializers import UserLoginSerializer, UserFKSerializer, UserSerializer
+from api.models import User, UserProfile
+from api.permissions import IsOwnerOrReadOnly
+from api.user.serializers import (UserFKSerializer, UserLoginSerializer,
+                                  UserSerializer)
 
 from .serializers import UserRegistrationSerializer
+
+
+class AuthCheck(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        return Response({'message': 'pass'}, status=status.HTTP_200_OK)
 
 
 class UserList(RetrieveAPIView):
@@ -17,6 +27,16 @@ class UserList(RetrieveAPIView):
     def get(self, request):
         users = User.objects.all()
         serializer = UserFKSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+class UserListAny(RetrieveAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        serializer = UserFKSerializer(user)
+        self.check_object_permissions(self.request, {'user': user.email})
         return Response(serializer.data)
 
 

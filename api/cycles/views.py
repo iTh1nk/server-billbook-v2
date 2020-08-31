@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
@@ -18,7 +18,8 @@ def home(request):
 
 
 class GetAll(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         cycles = models.Cycles.objects.all().order_by('date')
@@ -28,11 +29,12 @@ class GetAll(APIView):
 
 class GetAny(APIView):
     # permission_classes = (IsOwnerOrReadOnly,)
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, pk):
         cycle = models.Cycles.objects.get(id=pk)
-        serializer = serializers.CyclesSerializer(cycle)
+        serializer = serializers.CyclesFKSerializer(cycle)
         # self.check_object_permissions(self.request, {'user': cycle.date})
         return Response(serializer.data)
 
