@@ -1,7 +1,10 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import update_last_login
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
+from django.core import exceptions
 
 from api.models import User, UserProfile
 
@@ -9,7 +12,8 @@ from api.models import User, UserProfile
 class UserFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'profile', 'user_statements', 'user_activities')
+        fields = ('id', 'email', 'profile',
+                  'user_statements', 'user_activities')
         depth = 1
 
 
@@ -17,6 +21,21 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ('first_name', 'last_name', 'phone_number', 'age', 'gender')
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('email', 'password', 'profile')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def validate_password(self, value: str) -> str:
+        # try:
+        #     validate_password(value, User)
+        return make_password(value)
+        # except exceptions.ValidationError as e:
+        #     raise serializers.ValidationError(e.messages)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

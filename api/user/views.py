@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import permission_classes
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     RetrieveAPIView, UpdateAPIView)
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +10,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from api.models import User, UserProfile
 from api.permissions import IsOwnerOrReadOnly
 from api.user.serializers import (UserFKSerializer, UserLoginSerializer,
-                                  UserSerializer)
+                                  UserSerializer, UserUpdateSerializer)
 
 from .serializers import UserRegistrationSerializer
 
@@ -40,9 +41,42 @@ class UserListAny(RetrieveAPIView):
         return Response(serializer.data)
 
 
+class UserUpdate(UpdateAPIView):
+    permission_classes = (IsAdminUser,)
+    serializer_class = UserUpdateSerializer
+
+    def put(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        profile = UserProfile.objects.get(user_id=user_id)
+        profileSerializer = UserSerializer(
+            profile, data={'first_name': request.data.get('profile').get('first_name'),
+                           'last_name': request.data.get('profile').get('last_name'), 'phone_number': request.data.get('profile').get('phone_number'),
+                           'age': request.data.get('profile').get('age'), 'gender': request.data.get('profile').get('gender')}, partial=True)
+        profileSerializer.is_valid(raise_exception=True)
+        profileSerializer.save()
+        if request.data.get('password'):
+            serializer = self.serializer_class(
+                user, data={'email': request.data.get('email'), 'password': request.data.get('password')}, partial=True)
+        else:
+            serializer = self.serializer_class(
+                user, data={'email': request.data.get('email')}, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'success': 'Updated Successfully!', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class UserDelete(DestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    def delete(self, _, user_id):
+        user = User.objects.get(pk=user_id)
+        user.delete()
+        return Response({'success': 'Deleted Successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+
 class UserRegistrationView(CreateAPIView):
 
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     serializer_class = UserRegistrationSerializer
 
     def post(self, request):
