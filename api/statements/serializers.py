@@ -14,4 +14,4 @@ class StatementsSerializer(serializers.ModelSerializer):
 class StatementsFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Statements
-        fields = ('id', 'balance', 'notes', 'user', 'cycle')
+        fields = ('id', 'balance', 'notes', 'user', 'cycle', 'username')

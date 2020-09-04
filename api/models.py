@@ -65,9 +65,10 @@ class UserProfile(models.Model):
 
 
 class Cycles(models.Model):
-    date = models.DateField(auto_now=False, auto_now_add=False, unique=True)
+    date = models.CharField(max_length=255, unique=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=True)
+    is_read = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.date
@@ -81,6 +82,7 @@ class Statements(models.Model):
         User, on_delete=models.CASCADE, related_name='user_statements')
     cycle = models.ForeignKey(
         Cycles, on_delete=models.CASCADE, related_name='cycle_statements')
+    username = models.CharField(max_length=255, default="")
     balance = models.CharField(max_length=255)
     notes = models.TextField()
     createdAt = models.DateField(auto_now_add=True)
@@ -93,9 +95,10 @@ class Statements(models.Model):
 class Activities(models.Model):
     user = models.ForeignKey(
         to=User, on_delete=models.CASCADE, related_name='user_activities', null=False)
-    date = models.DateField()
+    date = models.CharField(max_length=255)
     amount = models.CharField(max_length=255)
     totalBalance = models.CharField(max_length=255)
+    is_read = models.CharField(max_length=10, default="n")
     createdAt = models.DateField(auto_now_add=True)
     updateAt = models.DateField(auto_now=True)
 

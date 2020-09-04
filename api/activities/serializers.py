@@ -10,7 +10,8 @@ class ActivitiesSerializer(serializers.ModelSerializer):
         model = models.Activities
         fields = "__all__"
 
+
 class ActivitiesFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Activities
-        fields = ('id', 'date', 'amount', 'totalBalance', 'user')
+        fields = ('id', 'date', 'amount', 'totalBalance', 'is_read', 'user')

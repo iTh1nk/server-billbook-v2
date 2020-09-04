@@ -62,6 +62,23 @@ class PutAny(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PutIsRead(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, pk):
+        cycle = models.Cycles.objects.get(id=pk)
+        is_read = request.data.pop('is_read')
+        data = {'is_read': is_read + getattr(cycle, 'is_read')}
+        if getattr(cycle, 'is_read').find(is_read) != -1:
+            return Response({'message': 'User Exists!'}, status=status.HTTP_200_OK)
+        serializer = serializers.CyclesIsReadSerializer(
+            cycle, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 'Updated Successfully!', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteAny(APIView):
     permission_classes = (IsAdminUser,)
 

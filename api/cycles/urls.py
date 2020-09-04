@@ -7,5 +7,6 @@ urlpatterns = [
     path('post/', views.PostAll.as_view()),
     path('get/<int:pk>/', views.GetAny.as_view()),
     path('put/<int:pk>/', views.PutAny.as_view()),
+    path('put/isread/<int:pk>/', views.PutIsRead.as_view()),
     path('delete/<int:pk>/', views.DeleteAny.as_view())
 ]
