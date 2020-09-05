@@ -21,7 +21,7 @@ class GetAll(APIView):
 
     def get(self, request):
         activities = models.Activities.objects.all()
-        serializer = serializers.ActivitiesSerializer(activities, many=True)
+        serializer = serializers.ActivitiesFKSerializer(activities, many=True)
         return Response(serializer.data)
 
 
@@ -32,6 +32,16 @@ class GetAny(APIView):
     def get(self, request, pk):
         activity = models.Activities.objects.get(id=pk)
         serializer = serializers.ActivitiesSerializer(activity)
+        return Response(serializer.data)
+
+
+class GetAnyByUser(APIView):
+    # permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, user_id):
+        activity = models.Activities.objects.filter(user=user_id).order_by('-date').first()
+        serializer = serializers.ActivitiesFKSerializer(activity)
         return Response(serializer.data)
 
 

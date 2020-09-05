@@ -14,4 +14,5 @@ class ActivitiesSerializer(serializers.ModelSerializer):
 class ActivitiesFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Activities
-        fields = ('id', 'date', 'amount', 'totalBalance', 'is_read', 'user')
+        fields = ('id', 'createdAt', 'updatedAt', 'date',
+                  'amount', 'totalBalance', 'is_read', 'user')

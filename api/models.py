@@ -86,7 +86,7 @@ class Statements(models.Model):
     balance = models.CharField(max_length=255)
     notes = models.TextField()
     createdAt = models.DateField(auto_now_add=True)
-    updateAt = models.DateField(auto_now=True)
+    updatedAt = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.balance
@@ -98,9 +98,9 @@ class Activities(models.Model):
     date = models.CharField(max_length=255)
     amount = models.CharField(max_length=255)
     totalBalance = models.CharField(max_length=255)
-    is_read = models.CharField(max_length=10, default="n")
+    is_read = models.CharField(max_length=10, default="")
     createdAt = models.DateField(auto_now_add=True)
-    updateAt = models.DateField(auto_now=True)
+    updatedAt = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.totalBalance

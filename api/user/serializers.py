@@ -13,7 +13,7 @@ class UserFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'profile',
-                  'user_statements', 'user_activities')
+                  'user_statements', 'user_activities', 'last_login', 'is_active', 'is_staff', 'is_superuser')
         depth = 1
 
 
