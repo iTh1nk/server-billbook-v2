@@ -22,7 +22,7 @@ class GetAll(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        cycles = models.Cycles.objects.all().order_by('date')
+        cycles = models.Cycles.objects.all().order_by('-date')
         serializer = serializers.CyclesFKSerializer(cycles, many=True)
         return Response(serializer.data)
 

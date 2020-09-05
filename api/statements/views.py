@@ -20,7 +20,7 @@ class GetAll(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        statements = models.Statements.objects.all()
+        statements = models.Statements.objects.all().order_by('-createdAt')
         serializer = serializers.StatementsSerializer(statements, many=True)
         return Response(serializer.data)
 
