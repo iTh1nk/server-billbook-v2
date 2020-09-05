@@ -173,4 +173,5 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://100.26.98.176',
     'https://billbook-v2.vercel.app',
+    'https://vzw.we0mmm.site'
 ]
