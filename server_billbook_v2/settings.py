@@ -28,7 +28,7 @@ SECRET_KEY = "3v3sy$-dv%154g==5os49nc!(ft^0w%^yw3_5h^*%3_-qdaye$"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '100.26.98.176']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '100.26.98.176', 'vzwapi.we0mmm.site']
 
 
 # Application definition
