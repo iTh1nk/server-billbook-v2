@@ -27,6 +27,16 @@ class GetAll(APIView):
         return Response(serializer.data)
 
 
+class GetAllIndex(APIView):
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        cycles = models.Cycles.objects.all().order_by('-date')
+        serializer = serializers.CyclesIndexSerializer(cycles, many=True)
+        return Response(serializer.data)
+
+
 class GetAny(APIView):
     # permission_classes = (IsOwnerOrReadOnly,)
     # permission_classes = (IsAuthenticated,)
