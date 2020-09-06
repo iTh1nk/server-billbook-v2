@@ -19,7 +19,7 @@ class CyclesFKSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class CyclesFKSerializer(serializers.ModelSerializer):
+class CyclesIndexSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Cycles
         fields = ('id', 'date')
