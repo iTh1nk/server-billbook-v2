@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 
 from api import models
+from api.pagination import CustomPagination
 
 from . import serializers
 
@@ -23,6 +25,26 @@ class GetAll(APIView):
         statements = models.Statements.objects.all().order_by('-createdAt')
         serializer = serializers.StatementsSerializer(statements, many=True)
         return Response(serializer.data)
+
+
+class GetPage(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    pagination_class = CustomPagination
+
+    def get(self, request):
+        statements = models.Statements.objects.all().order_by('-createdAt')
+        page = self.paginate_queryset(statements)
+
+        if page is not None:
+            serializer = serializers.StatementsSerializer(page, many=True)
+            result = self.get_paginated_response(serializer.data)
+            data = result.data
+        else:
+            serializer = serializers.StatementsSerializer(
+                statements, many=True)
+            data = serializer.data
+
+        return Response(data)
 
 
 class GetAny(APIView):

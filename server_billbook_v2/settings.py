@@ -138,7 +138,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'server_billbook_v2.pagination.CustomPagination'
 }
 
 JWT_AUTH = {
