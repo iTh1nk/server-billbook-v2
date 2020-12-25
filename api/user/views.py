@@ -21,6 +21,12 @@ class AuthCheck(APIView):
     def post(self, request):
         return Response({'message': 'pass'}, status=status.HTTP_200_OK)
 
+class AdminCheck(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def post(self, request):
+        return Response({'message': 'pass'}, status=status.HTTP_200_OK)
+
 
 class UserList(RetrieveAPIView):
     permission_classes = (IsAdminUser,)

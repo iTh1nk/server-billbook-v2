@@ -10,4 +10,5 @@ urlpatterns = [
     path('put/<uuid:user_id>/', views.UserUpdate.as_view()),
     path('delete/<uuid:user_id>/', views.UserDelete.as_view()),
     path('check/', views.AuthCheck.as_view()),
+    path('admincheck/', views.AdminCheck.as_view()),
 ]
