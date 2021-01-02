@@ -119,7 +119,7 @@ class UserLoginView(RetrieveAPIView):
             response = {
                 'success': 'False',
                 'status': status.HTTP_400_BAD_REQUEST,
-                'message': 'User logged in successfully!',
+                'message': 'User logged in UNSUCCESSFULLY!',
                 'token': ''
             }
             status_code = status.HTTP_400_BAD_REQUEST
