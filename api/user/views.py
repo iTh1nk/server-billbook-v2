@@ -105,15 +105,24 @@ class UserLoginView(RetrieveAPIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        response = {
-            'success': 'True',
-            'status': status.HTTP_200_OK,
-            'message': 'User logged in successfully!',
-            'token': serializer.data['token']
-        }
-        status_code = status.HTTP_200_OK
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            response = {
+                'success': 'True',
+                'status': status.HTTP_200_OK,
+                'message': 'User logged in successfully!',
+                'token': serializer.data['token']
+            }
+            status_code = status.HTTP_200_OK
+        except Exception as e:
+            response = {
+                'success': 'False',
+                'status': status.HTTP_400_BAD_REQUEST,
+                'message': 'User logged in successfully!',
+                'token': ''
+            }
+            status_code = status.HTTP_400_BAD_REQUEST
 
         return Response(response, status=status_code)
 
