@@ -118,11 +118,11 @@ class UserLoginView(RetrieveAPIView):
         except Exception as e:
             response = {
                 'success': 'False',
-                'status': status.HTTP_400_BAD_REQUEST,
+                'status': status.HTTP_401_UNAUTHORIZED,
                 'message': 'Username and password do not match!',
                 'token': ''
             }
-            status_code = status.HTTP_400_BAD_REQUEST
+            status_code = status.HTTP_401_UNAUTHORIZED
 
         return Response(response, status=status_code)
 
