@@ -107,6 +107,8 @@ class Activities(models.Model):
 
 
 class APNsToken(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    environment = models.CharField(max_length=255, default="", null=False)
     username = models.CharField(max_length=255, default="", null=False)
     apnsToken = models.CharField(max_length=255, default="", null=False)
     ipAddr = models.CharField(max_length=255, default="")
