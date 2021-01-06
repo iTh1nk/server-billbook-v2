@@ -104,3 +104,11 @@ class Activities(models.Model):
 
     def __str__(self):
         return self.totalBalance
+
+
+class APNsToken(models.Model):
+    username = models.CharField(max_length=255, default="", null=False)
+    apnsToken = models.CharField(max_length=255, default="", null=False)
+    ipAddr = models.CharField(max_length=255, default="")
+    createdAt = models.DateField(auto_now_add=True)
+    updatedAt = models.DateField(auto_now=True)
