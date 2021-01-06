@@ -6,4 +6,4 @@ from api.models import APNsToken
 class ApnsTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = APNsToken
-        fields = ('id', 'username', 'apnsToken','ipAddr', 'createdAt', 'updatedAt')
+        fields = ('id', 'username', 'apnsToken', 'environment', 'ipAddr', 'createdAt', 'updatedAt')
