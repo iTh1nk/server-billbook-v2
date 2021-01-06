@@ -36,7 +36,7 @@ class GetAny(APIView):
 
 
 class PostAll(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         serializer = serializers.ApnsTokenSerializer(data=request.data)
