@@ -50,7 +50,7 @@ class PostAll(APIView):
 
 
 class PutLastUsed(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def put(self, request, token):
         apnsTokens = models.APNsToken.objects.get(apnsToken=token)
