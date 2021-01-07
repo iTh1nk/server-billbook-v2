@@ -46,6 +46,23 @@ class PostAll(APIView):
         return Response({'Error': serializer.errors, 'status': status.HTTP_400_BAD_REQUEST}, serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PutLastUsed(APIView):
+    permission_classes = (IsAdminUser,)
+
+    def put(self, request, token):
+        apnsTokens = models.APNsToken.objects.get(apsToken=token)
+        serializer = serializers.ApnsTokenSerializer(apnsTokens, data={'token': request.data.get('token')}, partial=True)
+        serializers.is_valid(raise_exception=True)
+        serializers.save()
+        return Response({'message': 'Updated Successfully!', 'data': serializer.data, 'status': status.HTTP_200_OK}, status=status.HTTP_200_OK)
+
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response({'message': 'Updated Successfully!', 'data': serializer.data, 'status': status.HTTP_200_OK}, status=status.HTTP_200_OK)
+        # return Response({'message': 'Updated Fail!', 'status': status.HTTP_400_BAD_REQUEST}, serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class DeleteAny(APIView):
     permission_classes = (IsAdminUser,)
 
