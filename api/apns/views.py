@@ -50,10 +50,12 @@ class PutLastUsed(APIView):
     permission_classes = (IsAdminUser,)
 
     def put(self, request, token):
-        apnsTokens = models.APNsToken.objects.get(apsToken=token)
-        serializer = serializers.ApnsTokenSerializer(apnsTokens, data={'token': request.data.get('token')}, partial=True)
-        serializers.is_valid(raise_exception=True)
-        serializers.save()
+        apnsTokens = models.APNsToken.objects.get(apnsToken=token)
+        
+        serializer = serializers.ApnsTokenSerializer(apnsTokens, data={'loginTimes': apnsTokens.loginTimes + 1}, partial=True)
+        
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response({'message': 'Updated Successfully!', 'data': serializer.data, 'status': status.HTTP_200_OK}, status=status.HTTP_200_OK)
 
         # if serializer.is_valid():
